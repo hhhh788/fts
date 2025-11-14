@@ -331,8 +331,9 @@ def compute_features(sp: Vector, qvec: Vector, nvec: Vector) -> List[float]:
     # J3 parameters (single entry in spec)
     features.extend(jn_contribution(sp, q_cart, nvec, _R3NNS, _TRANSFORMED_J3))
 
-    # B1 parameters (one per nearest neighbour)
-    features.extend(j14_contributions(sp, q_cart, nvec))
+    # B1 parameter (single coefficient shared across all six neighbours)
+    b1_total = sum(j14_contributions(sp, q_cart, nvec))
+    features.append(b1_total)
 
     return features
 
@@ -433,12 +434,7 @@ def main() -> None:
         "J1_4",
         "J2_1",
         "J3_1",
-        "B1_1",
-        "B1_2",
-        "B1_3",
-        "B1_4",
-        "B1_5",
-        "B1_6",
+        "B1",
     ]
 
     if len(params) != len(names):
